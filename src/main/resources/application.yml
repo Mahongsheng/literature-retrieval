@@ -1,1 +1,12 @@
+server:
+  port: 8900
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/literature_retrieval?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC
+    username: root
+    password: mydatabase
 
+  elasticsearch:
+    rest:
+      uris: http://localhost:9200
