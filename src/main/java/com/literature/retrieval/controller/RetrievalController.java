@@ -4,9 +4,13 @@ import com.literature.retrieval.dao.es.LiteratureRepository;
 import com.literature.retrieval.dao.mysql.LiteratureMapper;
 import com.literature.retrieval.po.es.LiteratureEs;
 import com.literature.retrieval.po.mysql.LiteratureMysql;
+import com.literature.retrieval.service.LiteratureService;
+import com.literature.retrieval.vo.AdvancedQueryVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -30,6 +34,9 @@ public class RetrievalController {
     @Autowired
     private LiteratureMapper literatureMapper;
 
+    @Autowired
+    private LiteratureService literatureService;
+
     @GetMapping("/all/mysql")
     public List<LiteratureMysql> getAllLiteratureFromMysql() {
         return literatureMapper.selectList(null);
@@ -38,5 +45,15 @@ public class RetrievalController {
     @GetMapping("/all/es")
     public Iterable<LiteratureEs> getAllLiteratureFromEs() {
         return literatureRepository.findAll();
+    }
+
+    @PostMapping("/mysql/advanced-query")
+    public List<LiteratureMysql> advancedQueryLiteratureFromMysql(@RequestBody AdvancedQueryVo advancedQueryVo) {
+        try {
+            return literatureService.advancedQueryLiteratureFromMysql(advancedQueryVo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

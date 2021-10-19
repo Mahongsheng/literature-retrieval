@@ -1,5 +1,10 @@
 package com.literature.retrieval.service;
 
+import com.literature.retrieval.po.mysql.LiteratureMysql;
+import com.literature.retrieval.vo.AdvancedQueryVo;
+
+import java.util.List;
+
 /**
  * @PACKAGE_NAME: com.literature.retrieval.service
  * @NAME: LiteratureService
@@ -8,4 +13,6 @@ package com.literature.retrieval.service;
  * @PROJECT_NAME: literature-retrieval
  */
 public interface LiteratureService {
+
+    List<LiteratureMysql> advancedQueryLiteratureFromMysql(AdvancedQueryVo advancedQueryVo);
 }
