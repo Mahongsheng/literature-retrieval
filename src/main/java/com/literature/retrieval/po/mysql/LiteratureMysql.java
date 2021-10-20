@@ -33,8 +33,8 @@ public class LiteratureMysql {
     @TableField(value = "keyword")
     private String keyword;
 
-    @TableField("_abstract")
-    private String _abstract;
+    @TableField(value = "literature_abstract")
+    private String literatureAbstract;
 
     @TableField(value = "origin")
     private String origin;

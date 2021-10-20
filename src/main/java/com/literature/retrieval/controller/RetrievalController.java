@@ -47,6 +47,13 @@ public class RetrievalController {
         return literatureRepository.findAll();
     }
 
+    /**
+     * 在MySQL中进行高级检索
+     *
+     * @param advancedQueryVo 检索条件
+     * @return 文献结果
+     * @author mahongsheng
+     */
     @PostMapping("/mysql/advanced-query")
     public List<LiteratureMysql> advancedQueryLiteratureFromMysql(@RequestBody AdvancedQueryVo advancedQueryVo) {
         try {

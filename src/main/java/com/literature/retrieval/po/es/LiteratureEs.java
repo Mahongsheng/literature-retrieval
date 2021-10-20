@@ -35,8 +35,8 @@ public class LiteratureEs {
     @Field(value = "keyword")
     private String keyword;
 
-    @Field(value = "_abstract")
-    private String _abstract;
+    @Field(value = "literature_abstract")
+    private String literatureAbstract;
 
     @Field(value = "origin")
     private String origin;

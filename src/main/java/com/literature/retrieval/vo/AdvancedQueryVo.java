@@ -19,7 +19,7 @@ public class AdvancedQueryVo {
     private String retrievalWord;
 
     /**
-     * 检索词状态：0为包含全部检索词、1为包含精确检索词、2为包含至少一个检索词、3为不包含检索词
+     * 检索词状态：0为包含全部检索词、1为包含全部精确检索词、2为包含至少一个检索词、3为不包含检索词
      */
     private Integer retrievalWordType;
 
