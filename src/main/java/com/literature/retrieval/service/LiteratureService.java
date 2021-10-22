@@ -1,5 +1,6 @@
 package com.literature.retrieval.service;
 
+import com.literature.retrieval.po.es.LiteratureEs;
 import com.literature.retrieval.po.mysql.LiteratureMysql;
 import com.literature.retrieval.vo.AdvancedQueryVo;
 
@@ -22,4 +23,6 @@ public interface LiteratureService {
      * @author mahongsheng
      */
     List<LiteratureMysql> advancedQueryLiteratureFromMysql(AdvancedQueryVo advancedQueryVo);
+
+    List<LiteratureEs> advancedQueryLiteratureFromEs(AdvancedQueryVo advancedQueryVo);
 }

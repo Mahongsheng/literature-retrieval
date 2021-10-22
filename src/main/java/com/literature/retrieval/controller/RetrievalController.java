@@ -63,4 +63,14 @@ public class RetrievalController {
             return null;
         }
     }
+
+    @PostMapping("/es/advanced-query")
+    public List<LiteratureEs> advancedQueryLiteratureFromEs(@RequestBody AdvancedQueryVo advancedQueryVo) {
+        try {
+            return literatureService.advancedQueryLiteratureFromEs(advancedQueryVo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

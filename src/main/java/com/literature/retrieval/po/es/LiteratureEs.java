@@ -23,7 +23,7 @@ public class LiteratureEs {
     @Id
     private String id;
 
-    @Field(value = "title")
+    @Field(value = "title", analyzer = "ik", searchAnalyzer = "hh")
     private String title;
 
     @Field(value = "author")

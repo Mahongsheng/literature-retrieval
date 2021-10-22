@@ -2,10 +2,13 @@ package com.literature.retrieval.dao.es;
 
 import com.literature.retrieval.po.es.LiteratureEs;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
- * ？？？
+ * ES查询接口层
  *
  * @PACKAGE_NAME: com.literature.retrieval.dao.es
  * @NAME: LiteratureMapper
@@ -15,4 +18,8 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface LiteratureRepository extends ElasticsearchRepository<LiteratureEs, Integer> {
+
+    List<LiteratureEs> findByTitleLike(String title);
+
+    List<LiteratureEs> findByTitleContaining(String title);
 }

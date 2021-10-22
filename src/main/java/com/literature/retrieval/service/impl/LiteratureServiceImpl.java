@@ -1,13 +1,19 @@
 package com.literature.retrieval.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.literature.retrieval.dao.es.LiteratureRepository;
 import com.literature.retrieval.dao.mysql.LiteratureMapper;
+import com.literature.retrieval.po.es.LiteratureEs;
 import com.literature.retrieval.po.mysql.LiteratureMysql;
 import com.literature.retrieval.service.LiteratureService;
 import com.literature.retrieval.vo.AdvancedQueryVo;
 import org.ansj.recognition.impl.StopRecognition;
 import org.ansj.splitWord.analysis.ToAnalysis;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.SearchHits;
+import org.springframework.data.elasticsearch.core.query.Criteria;
+import org.springframework.data.elasticsearch.core.query.CriteriaQuery;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,6 +33,12 @@ import java.util.List;
 public class LiteratureServiceImpl implements LiteratureService {
     @Autowired
     private LiteratureMapper literatureMapper;
+
+    @Autowired
+    private LiteratureRepository literatureRepository;
+
+    @Autowired
+    private ElasticsearchOperations elasticsearchOperations;
 
     @Override
     public List<LiteratureMysql> advancedQueryLiteratureFromMysql(AdvancedQueryVo advancedQueryVo) {
@@ -144,5 +156,15 @@ public class LiteratureServiceImpl implements LiteratureService {
             formattedRetrievalWordList.addAll(Arrays.asList(formattedRetrievalWord.split(",")));
         }
         return formattedRetrievalWordList;
+    }
+
+    @Override
+    public List<LiteratureEs> advancedQueryLiteratureFromEs(AdvancedQueryVo advancedQueryVo) {
+
+//        Criteria criteria = new Criteria("title").matches("微服务");
+//        CriteriaQuery criteriaQuery = new CriteriaQuery(criteria);
+//        SearchHits<LiteratureEs> search = elasticsearchOperations.search(criteriaQuery, LiteratureEs.class);
+//        elasticsearchOperations.search()
+        return literatureRepository.findByTitleLike("微服务");
     }
 }
