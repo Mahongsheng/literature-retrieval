@@ -7,6 +7,8 @@ import com.literature.retrieval.vo.AdvancedQueryVo;
 import java.util.List;
 
 /**
+ * 文献检索服务接口
+ *
  * @PACKAGE_NAME: com.literature.retrieval.service
  * @NAME: LiteratureService
  * @AUTHOR: Hansel Ma
@@ -24,5 +26,12 @@ public interface LiteratureService {
      */
     List<LiteratureMysql> advancedQueryLiteratureFromMysql(AdvancedQueryVo advancedQueryVo);
 
+    /**
+     * 在Elasticsearch中进行高级检索
+     *
+     * @param advancedQueryVo 检索条件
+     * @return 文献结果
+     * @author mahongsheng
+     */
     List<LiteratureEs> advancedQueryLiteratureFromEs(AdvancedQueryVo advancedQueryVo);
 }

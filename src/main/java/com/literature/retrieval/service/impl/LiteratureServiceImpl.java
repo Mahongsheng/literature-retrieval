@@ -9,8 +9,12 @@ import com.literature.retrieval.service.LiteratureService;
 import com.literature.retrieval.vo.AdvancedQueryVo;
 import org.ansj.recognition.impl.StopRecognition;
 import org.ansj.splitWord.analysis.ToAnalysis;
+import org.elasticsearch.index.query.MatchQueryBuilder;
+import org.elasticsearch.index.query.Operator;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.query.Criteria;
 import org.springframework.data.elasticsearch.core.query.CriteriaQuery;
@@ -19,6 +23,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * 检索模块实现层
@@ -160,11 +166,112 @@ public class LiteratureServiceImpl implements LiteratureService {
 
     @Override
     public List<LiteratureEs> advancedQueryLiteratureFromEs(AdvancedQueryVo advancedQueryVo) {
+        Criteria baseCriteria = null;
+        /*
+        主题部分
+         */
+        if (advancedQueryVo.getRetrievalWord() != null
+                && !advancedQueryVo.getRetrievalWord().isEmpty()) {
+            baseCriteria = new Criteria("title");
+            handleEsTitle(baseCriteria, advancedQueryVo.getRetrievalWord(), advancedQueryVo.getRetrievalWordType());
+        }
+        /*
+        作者部分
+         */
+        if (advancedQueryVo.getAuthor() != null
+                && !advancedQueryVo.getAuthor().isEmpty()) {
+            if (baseCriteria == null) {
+                baseCriteria = new Criteria("author");
+            } else {
+                baseCriteria.and("author");
+            }
+            baseCriteria.matches(advancedQueryVo.getAuthor());
+        }
+        /*
+        单位部分
+         */
+        if (advancedQueryVo.getOrganization() != null
+                && !advancedQueryVo.getOrganization().isEmpty()) {
+            if (baseCriteria == null) {
+                baseCriteria = new Criteria("organization");
+            } else {
+                baseCriteria.and("organization");
+            }
+            baseCriteria.matches(advancedQueryVo.getOrganization());
+        }
+        /*
+        来源部分
+         */
+        if (advancedQueryVo.getOrigin() != null
+                && !advancedQueryVo.getOrigin().isEmpty()) {
+            if (baseCriteria == null) {
+                baseCriteria = new Criteria("origin");
+            } else {
+                baseCriteria.and("origin");
+            }
+            baseCriteria.matches(advancedQueryVo.getOrigin());
+        }
+        /*
+        发表时间部分
+        */
+        if (advancedQueryVo.getPublicationTime() != null
+                && !advancedQueryVo.getPublicationTime().isEmpty()) {
+            // TODO
+        }
+        /*
+        文献类型部分
+         */
+        if (advancedQueryVo.getRetrievalWordType() != null
+                && !advancedQueryVo.getLiteratureType().isEmpty()) {
+            if (baseCriteria == null) {
+                baseCriteria = new Criteria("origin");
+            } else {
+                baseCriteria.and("literature_type");
+            }
+            baseCriteria.matches(advancedQueryVo.getLiteratureType());
+        }
 
-//        Criteria criteria = new Criteria("title").matches("微服务");
-//        CriteriaQuery criteriaQuery = new CriteriaQuery(criteria);
-//        SearchHits<LiteratureEs> search = elasticsearchOperations.search(criteriaQuery, LiteratureEs.class);
-//        elasticsearchOperations.search()
-        return literatureRepository.findByTitleLike("微服务");
+        if (baseCriteria == null) {
+            return new ArrayList<>();
+        }
+
+        CriteriaQuery criteriaQuery = new CriteriaQuery(baseCriteria);
+        SearchHits<LiteratureEs> search = elasticsearchOperations.search(criteriaQuery, LiteratureEs.class);
+        return search.getSearchHits()
+                .stream()
+                .map(SearchHit::getContent)
+                .collect(Collectors.toList());
+    }
+
+    private void handleEsTitle(Criteria baseCriteria,
+                               String retrievalWord,
+                               Integer retrievalWordType) {
+        List<String> formattedRetrievalWordList;
+        switch (retrievalWordType) {
+            case 0:
+                // 包含全部检索词
+                baseCriteria.matches(retrievalWord);
+                break;
+            case 1:
+                // 包含全部精确检索词，即不会进行分词处理
+                formattedRetrievalWordList = Arrays.asList(retrievalWord.split(","));
+                formattedRetrievalWordList.forEach(baseCriteria::matchesAll);
+                break;
+            case 2:
+                // 包含至少一个检索词
+                formattedRetrievalWordList = Arrays.asList(retrievalWord.split(","));
+                for (int i = 0; i < formattedRetrievalWordList.size(); i++) {
+                    baseCriteria.matches(formattedRetrievalWordList.get(i));
+                    if (i != formattedRetrievalWordList.size() - 1) {
+                        baseCriteria.or("title");
+                    }
+                }
+                break;
+            case 3:
+                // 不包含检索词
+                baseCriteria.not().matches(retrievalWord);
+                break;
+            default:
+        }
     }
 }

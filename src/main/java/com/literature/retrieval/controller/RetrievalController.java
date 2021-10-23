@@ -64,6 +64,13 @@ public class RetrievalController {
         }
     }
 
+    /**
+     * 在Elasticsearch中进行高级检索
+     *
+     * @param advancedQueryVo 检索条件
+     * @return 文献结果
+     * @author mahongsheng
+     */
     @PostMapping("/es/advanced-query")
     public List<LiteratureEs> advancedQueryLiteratureFromEs(@RequestBody AdvancedQueryVo advancedQueryVo) {
         try {
