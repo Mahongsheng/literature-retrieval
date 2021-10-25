@@ -2,7 +2,6 @@ package com.literature.retrieval.dao.es;
 
 import com.literature.retrieval.po.es.LiteratureEs;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

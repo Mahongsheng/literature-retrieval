@@ -5,6 +5,8 @@ import com.literature.retrieval.po.mysql.LiteratureMysql;
 import org.springframework.stereotype.Repository;
 
 /**
+ * 数据库文献模块查询接口层
+ *
  * @PACKAGE_NAME: com.literature.retrieval.dao.mysql
  * @NAME: LiteratureMapper
  * @AUTHOR: Hansel Ma

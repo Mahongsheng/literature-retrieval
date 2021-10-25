@@ -37,11 +37,23 @@ public class RetrievalController {
     @Autowired
     private LiteratureService literatureService;
 
+    /**
+     * 从数据库中获取全部文献
+     *
+     * @return 文献结果
+     * @author mahongsheng
+     */
     @GetMapping("/all/mysql")
     public List<LiteratureMysql> getAllLiteratureFromMysql() {
         return literatureMapper.selectList(null);
     }
 
+    /**
+     * 从es中获取全部文献
+     *
+     * @return 文献结果
+     * @author mahongsheng
+     */
     @GetMapping("/all/es")
     public Iterable<LiteratureEs> getAllLiteratureFromEs() {
         return literatureRepository.findAll();
