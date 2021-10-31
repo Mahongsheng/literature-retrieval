@@ -5,19 +5,17 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
-class LiteratureServiceTest {
+class RetrievalServiceTest {
 
     @Autowired
-    private LiteratureService literatureService;
+    private RetrievalService retrievalService;
 
     @Test
     void advancedQueryLiteratureFromMysql() {
         AdvancedQueryVo advancedQueryVo = new AdvancedQueryVo();
         advancedQueryVo.setRetrievalWord("软件测试与微服务,大数据");
         advancedQueryVo.setRetrievalWordType(3);
-        literatureService.advancedQueryLiteratureFromMysql(advancedQueryVo).forEach(System.out::println);
+        retrievalService.advancedQueryLiteratureFromMysql(advancedQueryVo).forEach(System.out::println);
     }
 }

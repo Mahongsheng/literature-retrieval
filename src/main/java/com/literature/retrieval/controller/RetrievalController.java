@@ -5,13 +5,11 @@ import com.literature.retrieval.dao.mysql.LiteratureMapper;
 import com.literature.retrieval.po.es.LiteratureEs;
 import com.literature.retrieval.po.mysql.LiteratureMysql;
 import com.literature.retrieval.service.LiteratureService;
+import com.literature.retrieval.service.RetrievalService;
 import com.literature.retrieval.vo.AdvancedQueryVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -35,7 +33,7 @@ public class RetrievalController {
     private LiteratureMapper literatureMapper;
 
     @Autowired
-    private LiteratureService literatureService;
+    private RetrievalService retrievalService;
 
     /**
      * 从数据库中获取全部文献
@@ -69,7 +67,7 @@ public class RetrievalController {
     @PostMapping("/mysql/advanced-query")
     public List<LiteratureMysql> advancedQueryLiteratureFromMysql(@RequestBody AdvancedQueryVo advancedQueryVo) {
         try {
-            return literatureService.advancedQueryLiteratureFromMysql(advancedQueryVo);
+            return retrievalService.advancedQueryLiteratureFromMysql(advancedQueryVo);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -86,7 +84,25 @@ public class RetrievalController {
     @PostMapping("/es/advanced-query")
     public List<LiteratureEs> advancedQueryLiteratureFromEs(@RequestBody AdvancedQueryVo advancedQueryVo) {
         try {
-            return literatureService.advancedQueryLiteratureFromEs(advancedQueryVo);
+            return retrievalService.advancedQueryLiteratureFromEs(advancedQueryVo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * 相似文献查询（分页）
+     *
+     * @param originKeywords 文献关键词
+     * @return 文献结果
+     */
+    @GetMapping("/es/similar-query")
+    public List<LiteratureEs> similarQueryLiteratureFromEs(@RequestParam("originKeywords") String originKeywords,
+                                                           @RequestParam("page") int page,
+                                                           @RequestParam("size") int size) {
+        try {
+            return retrievalService.similarQueryLiteratureFromEs(originKeywords, page, size);
         } catch (Exception e) {
             e.printStackTrace();
             return null;

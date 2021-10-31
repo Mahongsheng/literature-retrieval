@@ -16,22 +16,5 @@ import java.util.List;
  * @PROJECT_NAME: literature-retrieval
  */
 public interface LiteratureService {
-
-    /**
-     * 在MySQL中进行高级检索
-     *
-     * @param advancedQueryVo 检索条件
-     * @return 文献结果
-     * @author mahongsheng
-     */
-    List<LiteratureMysql> advancedQueryLiteratureFromMysql(AdvancedQueryVo advancedQueryVo);
-
-    /**
-     * 在Elasticsearch中进行高级检索
-     *
-     * @param advancedQueryVo 检索条件
-     * @return 文献结果
-     * @author mahongsheng
-     */
-    List<LiteratureEs> advancedQueryLiteratureFromEs(AdvancedQueryVo advancedQueryVo);
+    boolean singleAddLiterature(LiteratureMysql literatureMysql);
 }
