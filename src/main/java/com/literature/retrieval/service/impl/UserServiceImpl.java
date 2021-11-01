@@ -1,5 +1,6 @@
 package com.literature.retrieval.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.literature.retrieval.dao.mysql.UserMapper;
 import com.literature.retrieval.po.mysql.User;
 import com.literature.retrieval.service.UserService;
@@ -30,5 +31,14 @@ public class UserServiceImpl implements UserService {
         String encodePassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodePassword);
         return userMapper.insert(user) == 1;
+    }
+
+    @Override
+    public boolean login(User user) {
+        String encodePassword = passwordEncoder.encode(user.getPassword());
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("username", user.getUsername())
+                .eq("password", encodePassword);
+        return userMapper.selectOne(queryWrapper) != null;
     }
 }

@@ -13,5 +13,19 @@ import com.literature.retrieval.po.mysql.User;
  */
 public interface UserService {
 
+    /**
+     * 用户注册
+     *
+     * @param user 用户名和密码
+     * @return 是否成功
+     */
     boolean registerNewUser(User user);
+
+    /**
+     * 用户登录
+     *
+     * @param user 用户名和密码
+     * @return 是否成功
+     */
+    boolean login(User user);
 }

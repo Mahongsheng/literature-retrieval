@@ -22,10 +22,32 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    /**
+     * 用户注册
+     *
+     * @param user 用户名和密码
+     * @return 是否成功
+     */
     @PostMapping("register-new-user")
     public Boolean registerNewUser(@RequestBody User user) {
         try {
             return userService.registerNewUser(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * 用户登录
+     *
+     * @param user 用户名和密码
+     * @return 是否成功
+     */
+    @PostMapping("login")
+    public Boolean login(@RequestBody User user) {
+        try {
+            return userService.login(user);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
