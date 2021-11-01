@@ -1,11 +1,12 @@
 package com.literature.retrieval.controller;
 
+import com.literature.retrieval.po.mysql.LiteratureMysql;
 import com.literature.retrieval.po.mysql.User;
 import com.literature.retrieval.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 用户管理模块
@@ -48,6 +49,40 @@ public class UserController {
     public Boolean login(@RequestBody User user) {
         try {
             return userService.login(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * 收藏文献
+     *
+     * @param userId       用户ID
+     * @param literatureId 文献ID
+     * @return 是否成功
+     */
+    @PostMapping("user-literature-collection")
+    public Boolean userLiteratureCollection(@RequestParam(value = "userId") Integer userId,
+                                            @RequestParam(value = "literatureId") Long literatureId) {
+        try {
+            return userService.userLiteratureCollection(userId, literatureId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * 查询用户收藏
+     *
+     * @param userId 用户ID
+     * @return 文献列表
+     */
+    @GetMapping("query-user-collection")
+    public List<LiteratureMysql> queryUserCollection(@RequestParam(value = "userId") Integer userId) {
+        try {
+            return userService.queryUserCollection(userId);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
