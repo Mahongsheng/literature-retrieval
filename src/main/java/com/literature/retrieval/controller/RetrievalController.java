@@ -4,7 +4,6 @@ import com.literature.retrieval.dao.es.LiteratureRepository;
 import com.literature.retrieval.dao.mysql.LiteratureMapper;
 import com.literature.retrieval.po.es.LiteratureEs;
 import com.literature.retrieval.po.mysql.LiteratureMysql;
-import com.literature.retrieval.service.LiteratureService;
 import com.literature.retrieval.service.RetrievalService;
 import com.literature.retrieval.vo.AdvancedQueryVo;
 import lombok.extern.slf4j.Slf4j;

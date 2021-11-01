@@ -1,0 +1,18 @@
+package com.literature.retrieval.dao.mysql;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.literature.retrieval.po.mysql.User;
+import org.springframework.stereotype.Repository;
+
+/**
+ * 数据库用户查询接口层
+ *
+ * @PACKAGE_NAME: com.literature.retrieval.dao.mysql
+ * @NAME: UserMapper
+ * @AUTHOR: Hansel Ma
+ * @DATE: 2021/11/1
+ * @PROJECT_NAME: literature-retrieval
+ */
+@Repository
+public interface UserMapper extends BaseMapper<User> {
+}
