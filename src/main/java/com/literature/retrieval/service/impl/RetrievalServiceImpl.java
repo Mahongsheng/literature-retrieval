@@ -85,7 +85,7 @@ public class RetrievalServiceImpl implements RetrievalService {
         /*
         文献类型部分
          */
-        if (advancedQueryVo.getRetrievalWordType() != null
+        if (advancedQueryVo.getLiteratureType() != null
                 && !advancedQueryVo.getLiteratureType().isEmpty()) {
             wrapper.eq("literature_type", advancedQueryVo.getLiteratureType());
         }
@@ -219,7 +219,7 @@ public class RetrievalServiceImpl implements RetrievalService {
         /*
         文献类型部分
          */
-        if (advancedQueryVo.getRetrievalWordType() != null
+        if (advancedQueryVo.getLiteratureType() != null
                 && !advancedQueryVo.getLiteratureType().isEmpty()) {
             if (baseCriteria == null) {
                 baseCriteria = new Criteria("origin");

@@ -7,8 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 /**
  * @PACKAGE_NAME: com.literature.retrieval.dao.mysql
  * @NAME: LiteratureMapperTest
@@ -26,7 +24,6 @@ public class LiteratureMapperTest {
     public void testSelect() {
         System.out.println(("----- selectAll method test ------"));
         List<LiteratureMysql> literatureMysqlList = literatureMapper.selectList(null);
-        assertEquals(1147, literatureMysqlList.size());
         literatureMysqlList.forEach(System.out::println);
     }
 }
