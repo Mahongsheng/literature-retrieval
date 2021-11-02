@@ -6,14 +6,15 @@ import com.literature.retrieval.po.mysql.LiteratureMysql;
 import com.literature.retrieval.service.LiteratureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -36,15 +37,33 @@ public class LiteratureServiceImpl implements LiteratureService {
     }
 
     @Override
-    public boolean csvAddLiterature(MultipartFile csvFile) throws IOException {
-        String filePath = UUID.randomUUID() + "+" + csvFile.getOriginalFilename();
-        File file = new File(filePath);
-        file.createNewFile();
-        csvFile.transferTo(file);
+    @Transactional
+    public boolean csvAddLiterature(MultipartFile csvFile) throws Exception {
+        CsvReader csvReader = new CsvReader(csvFile.getInputStream(), StandardCharsets.UTF_8);
+        csvReader.readHeaders();
+        List<List<String>> csvContents = new ArrayList<>();
+        while (csvReader.readRecord()) {
+            List<String> csvRow = new ArrayList<>();
+            for (int i = 1; i < 9; i++) {
+                csvRow.add(csvReader.get(i));
+            }
+            csvContents.add(csvRow);
+        }
 
-        BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
-        CsvReader csvReader = new CsvReader(bufferedReader);
-        System.out.println(csvReader.getRawRecord());
-        return false;
+        for (List<String> row : csvContents) {
+            LiteratureMysql literatureMysql = new LiteratureMysql();
+            literatureMysql.setTitle(row.get(0));
+            literatureMysql.setAuthor(row.get(1));
+            literatureMysql.setOrganization(row.get(2));
+            literatureMysql.setKeyword(row.get(3));
+            literatureMysql.setLiteratureAbstract(row.get(4));
+            literatureMysql.setOrigin(row.get(5));
+            literatureMysql.setPublicationTime(row.get(6));
+            literatureMysql.setLiteratureType(row.get(7));
+            if (literatureMapper.insert(literatureMysql) != 1) {
+                throw new Exception("插入失败");
+            }
+        }
+        return true;
     }
 }

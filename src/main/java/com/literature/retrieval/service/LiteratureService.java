@@ -30,5 +30,5 @@ public interface LiteratureService {
      * @param csvFile csv文件
      * @return 是否成功
      */
-    boolean csvAddLiterature(MultipartFile csvFile) throws IOException;
+    boolean csvAddLiterature(MultipartFile csvFile) throws Exception;
 }
