@@ -105,6 +105,9 @@ public class RetrievalServiceImpl implements RetrievalService {
                              Integer retrievalWordType) {
         String[] retrievalWordList = retrievalWord.split(",");
         List<String> formattedRetrievalWordList;
+        if (retrievalWordType == null) {
+            retrievalWordType = 0;
+        }
         switch (retrievalWordType) {
             case 0:
                 // 包含全部检索词
@@ -181,10 +184,12 @@ public class RetrievalServiceImpl implements RetrievalService {
                 && !advancedQueryVo.getAuthor().isEmpty()) {
             if (baseCriteria == null) {
                 baseCriteria = new Criteria("author");
+                baseCriteria.matchesAll(advancedQueryVo.getAuthor());
             } else {
-                baseCriteria.and("author");
+                Criteria thisCriteria = new Criteria("author");
+                thisCriteria.matchesAll(advancedQueryVo.getAuthor());
+                baseCriteria.and(thisCriteria);
             }
-            baseCriteria.matches(advancedQueryVo.getAuthor());
         }
         /*
         单位部分
@@ -193,10 +198,12 @@ public class RetrievalServiceImpl implements RetrievalService {
                 && !advancedQueryVo.getOrganization().isEmpty()) {
             if (baseCriteria == null) {
                 baseCriteria = new Criteria("organization");
+                baseCriteria.matchesAll(advancedQueryVo.getOrganization());
             } else {
-                baseCriteria.and("organization");
+                Criteria thisCriteria = new Criteria("organization");
+                thisCriteria.matchesAll(advancedQueryVo.getOrganization());
+                baseCriteria.and(thisCriteria);
             }
-            baseCriteria.matches(advancedQueryVo.getOrganization());
         }
         /*
         来源部分
@@ -205,10 +212,12 @@ public class RetrievalServiceImpl implements RetrievalService {
                 && !advancedQueryVo.getOrigin().isEmpty()) {
             if (baseCriteria == null) {
                 baseCriteria = new Criteria("origin");
+                baseCriteria.matchesAll(advancedQueryVo.getOrigin());
             } else {
-                baseCriteria.and("origin");
+                Criteria thisCriteria = new Criteria("origin");
+                thisCriteria.matchesAll(advancedQueryVo.getOrigin());
+                baseCriteria.and(thisCriteria);
             }
-            baseCriteria.matches(advancedQueryVo.getOrigin());
         }
         /*
         发表时间部分
@@ -224,10 +233,12 @@ public class RetrievalServiceImpl implements RetrievalService {
                 && !advancedQueryVo.getLiteratureType().isEmpty()) {
             if (baseCriteria == null) {
                 baseCriteria = new Criteria("origin");
+                baseCriteria.matches(advancedQueryVo.getLiteratureType());
             } else {
-                baseCriteria.and("literature_type");
+                Criteria thisCriteria = new Criteria("literature_type");
+                thisCriteria.matchesAll(advancedQueryVo.getLiteratureType());
+                baseCriteria.and(thisCriteria);
             }
-            baseCriteria.matches(advancedQueryVo.getLiteratureType());
         }
 
         if (baseCriteria == null) {
@@ -236,10 +247,15 @@ public class RetrievalServiceImpl implements RetrievalService {
 
         CriteriaQuery criteriaQuery = new CriteriaQuery(baseCriteria);
         SearchHits<LiteratureEs> search = elasticsearchOperations.search(criteriaQuery, LiteratureEs.class);
-        return search.getSearchHits()
+        List<LiteratureEs> literatureEs = search.getSearchHits()
                 .stream()
                 .map(SearchHit::getContent)
                 .collect(Collectors.toList());
+        literatureEs.forEach(collect -> {
+            collect.setPublicationTime(collect.getPublicationTime().split("T")[0]);
+        });
+
+        return literatureEs;
     }
 
     /**
@@ -253,6 +269,9 @@ public class RetrievalServiceImpl implements RetrievalService {
                                String retrievalWord,
                                Integer retrievalWordType) {
         List<String> formattedRetrievalWordList;
+        if (retrievalWordType == null) {
+            retrievalWordType = 0;
+        }
         switch (retrievalWordType) {
             case 0:
                 // 包含全部检索词
