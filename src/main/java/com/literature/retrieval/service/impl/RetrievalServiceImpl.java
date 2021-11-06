@@ -252,7 +252,9 @@ public class RetrievalServiceImpl implements RetrievalService {
                 .map(SearchHit::getContent)
                 .collect(Collectors.toList());
         literatureEs.forEach(collect -> {
-            collect.setPublicationTime(collect.getPublicationTime().split("T")[0]);
+            if (collect.getPublicationTime() != null) {
+                collect.setPublicationTime(collect.getPublicationTime().split("T")[0]);
+            }
         });
 
         return literatureEs;
@@ -275,7 +277,7 @@ public class RetrievalServiceImpl implements RetrievalService {
         switch (retrievalWordType) {
             case 0:
                 // 包含全部检索词
-                baseCriteria.matches(retrievalWord);
+                baseCriteria.matchesAll(retrievalWord);
                 break;
             case 1:
                 // 包含全部精确检索词，即不会进行分词处理
@@ -286,9 +288,12 @@ public class RetrievalServiceImpl implements RetrievalService {
                 // 包含至少一个检索词
                 formattedRetrievalWordList = Arrays.asList(retrievalWord.split(","));
                 for (int i = 0; i < formattedRetrievalWordList.size(); i++) {
-                    baseCriteria.matches(formattedRetrievalWordList.get(i));
-                    if (i != formattedRetrievalWordList.size() - 1) {
-                        baseCriteria.or("title");
+                    if (i == 0) {
+                        baseCriteria.matches(formattedRetrievalWordList.get(i));
+                    }else {
+                        Criteria thisCriteria = new Criteria("title");
+                        thisCriteria.matches(formattedRetrievalWordList.get(i));
+                        baseCriteria.or(thisCriteria);
                     }
                 }
                 break;
