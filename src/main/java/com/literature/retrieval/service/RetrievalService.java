@@ -1,5 +1,6 @@
 package com.literature.retrieval.service;
 
+import com.literature.retrieval.dto.LiteratureDto;
 import com.literature.retrieval.po.es.LiteratureEs;
 import com.literature.retrieval.po.mysql.LiteratureMysql;
 import com.literature.retrieval.vo.AdvancedQueryVo;
@@ -42,5 +43,5 @@ public interface RetrievalService {
      * @param originKeywords 文献关键词
      * @return 文献结果
      */
-    List<LiteratureEs> similarQueryLiteratureFromEs(String originKeywords, int page, int size);
+    LiteratureDto similarQueryLiteratureFromEs(String originKeywords, int page, int size);
 }

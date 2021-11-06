@@ -3,6 +3,7 @@ package com.literature.retrieval.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.literature.retrieval.dao.es.LiteratureRepository;
 import com.literature.retrieval.dao.mysql.LiteratureMapper;
+import com.literature.retrieval.dto.LiteratureDto;
 import com.literature.retrieval.po.es.LiteratureEs;
 import com.literature.retrieval.po.mysql.LiteratureMysql;
 import com.literature.retrieval.service.RetrievalService;
@@ -281,16 +282,18 @@ public class RetrievalServiceImpl implements RetrievalService {
     }
 
     @Override
-    public List<LiteratureEs> similarQueryLiteratureFromEs(String originKeywords, int page, int size) {
+    public LiteratureDto similarQueryLiteratureFromEs(String originKeywords, int page, int size) {
         Criteria baseCriteria = new Criteria("keyword")
                 .matches(originKeywords);
         CriteriaQuery criteriaQuery = new CriteriaQuery(baseCriteria);
         PageRequest pageRequest = PageRequest.of(page, size);
         criteriaQuery.setPageable(pageRequest);
         SearchHits<LiteratureEs> search = elasticsearchOperations.search(criteriaQuery, LiteratureEs.class);
-        return search.getSearchHits()
-                .stream()
-                .map(SearchHit::getContent)
-                .collect(Collectors.toList());
+        search.getTotalHits();
+
+        LiteratureDto literatureDto = new LiteratureDto();
+        literatureDto.setLiteratureEs(search.getSearchHits().stream().map(SearchHit::getContent).collect(Collectors.toList()));
+        literatureDto.setWholeHits(search.getTotalHits());
+        return literatureDto;
     }
 }

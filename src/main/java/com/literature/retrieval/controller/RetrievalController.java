@@ -2,6 +2,7 @@ package com.literature.retrieval.controller;
 
 import com.literature.retrieval.dao.es.LiteratureRepository;
 import com.literature.retrieval.dao.mysql.LiteratureMapper;
+import com.literature.retrieval.dto.LiteratureDto;
 import com.literature.retrieval.po.es.LiteratureEs;
 import com.literature.retrieval.po.mysql.LiteratureMysql;
 import com.literature.retrieval.service.RetrievalService;
@@ -97,9 +98,9 @@ public class RetrievalController {
      * @return 文献结果
      */
     @GetMapping("/es/similar-query")
-    public List<LiteratureEs> similarQueryLiteratureFromEs(@RequestParam("originKeywords") String originKeywords,
-                                                           @RequestParam("page") int page,
-                                                           @RequestParam("size") int size) {
+    public LiteratureDto similarQueryLiteratureFromEs(@RequestParam("originKeywords") String originKeywords,
+                                                      @RequestParam("page") int page,
+                                                      @RequestParam("size") int size) {
         try {
             return retrievalService.similarQueryLiteratureFromEs(originKeywords, page, size);
         } catch (Exception e) {
