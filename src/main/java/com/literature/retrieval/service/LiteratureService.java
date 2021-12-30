@@ -3,8 +3,6 @@ package com.literature.retrieval.service;
 import com.literature.retrieval.po.mysql.LiteratureMysql;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-
 /**
  * 文献检索服务接口
  *

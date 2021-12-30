@@ -290,7 +290,7 @@ public class RetrievalServiceImpl implements RetrievalService {
                 for (int i = 0; i < formattedRetrievalWordList.size(); i++) {
                     if (i == 0) {
                         baseCriteria.matches(formattedRetrievalWordList.get(i));
-                    }else {
+                    } else {
                         Criteria thisCriteria = new Criteria("title");
                         thisCriteria.matches(formattedRetrievalWordList.get(i));
                         baseCriteria.or(thisCriteria);

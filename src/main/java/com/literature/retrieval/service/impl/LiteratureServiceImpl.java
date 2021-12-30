@@ -9,15 +9,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
 /**
+ * 文献检索模块实现层
+ *
  * @PACKAGE_NAME: com.literature.retrieval.service.impl
  * @NAME: LiteratureServiceImpl
  * @AUTHOR: Hansel Ma

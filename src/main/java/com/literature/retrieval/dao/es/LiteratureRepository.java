@@ -17,6 +17,5 @@ import java.util.List;
  */
 @Repository
 public interface LiteratureRepository extends ElasticsearchRepository<LiteratureEs, Integer> {
-
     List<LiteratureEs> findByKeywordLike(String keywords);
 }

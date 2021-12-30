@@ -9,4 +9,4 @@ spring:
 
   elasticsearch:
     rest:
-      uris: http://localhost:9200
+      uris: http://localhost:9200 # 这里的地址为本地

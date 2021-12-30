@@ -29,6 +29,7 @@ class LiteratureControllerTest {
 
     @Test
     void csvAddLiterature() {
+        literatureController.csvAddLiterature(null);
         System.out.println("该测试使用集成测试");
     }
 }
