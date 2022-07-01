@@ -1,4 +1,8 @@
-<img src="./document/LOGO.jpg" alt="LOGO" style="zoom: 33%;" />
+<div align="center">
+    <img src="./document/LOGO.jpg" alt="LOGO" width="25%" />
+</div>
+
+
 
 ---
 
@@ -91,4 +95,4 @@ ES检索：
 
 Over，祝好！
 
-有用请Star~需要项目PPT请发邮件到`mahhss@foxmail.com`，由于本人总是意念回复，如回复的慢了请海涵一下下~
+如有用烦请Star一下下，需要项目PPT请发邮件到`mahhss@foxmail.com`，由于本人总是意念回复，如回复的慢了请海涵一下下~
